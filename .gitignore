@@ -1,0 +1,40 @@
+# Python compiled files
+**/__pycache__/
+**/*.pyc
+
+# Pytest cache
+**/.pytest_cache/
+
+# Mac related files
+.DS_Store
+
+# Virtual Environment
+.venv
+.env
+.mlopstemplateenv
+
+# VSCode config files
+.vscode
+
+# Static files
+*.xlsx
+*.xls
+*.csv
+*.jsonlines
+#*.json
+*.log
+
+*.xlsm
+
+# ipynb_checkpoints
+.ipynb_checkpoints
+
+# TF models
+**/saved_models/
+**/debug/
+
+*.egg-info/
+
+
+# ZSH history
+.zsh_history
