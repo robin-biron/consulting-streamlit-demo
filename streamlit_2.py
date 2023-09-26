@@ -98,20 +98,67 @@ elif menu == 'Data Visualization':
     else:
         st.warning('Please generate DataFrames first!')
 
-
-#     if 'factory_a' in st.session_state and 'factory_b' in st.session_state:
-#         t_stat, p_value = stats.ttest_ind(st.session_state.factory_a['Measurement'], st.session_state.factory_b['Measurement'])
-#         st.write('### P-value from t-test:')
-#         st.write(p_value)
+    if 'factory_a' in st.session_state and 'factory_b' in st.session_state:
+        t_stat, p_value = stats.ttest_ind(st.session_state.factory_a['Measurement'], st.session_state.factory_b['Measurement'])
+        st.write('### P-value from t-test:')
+        st.write(p_value)
         
-#         if p_value <= 0.05:
-#             st.write('### Conclusion:')
-#             st.markdown('The p-value is **less than 0.05**, hence we reject the null hypothesis and conclude that the two samples are **statistically different**.')
-#         else:
-#             st.write('### Conclusion:')
-#             st.markdown('The p-value is **greater than 0.05**, hence we do not reject the null hypothesis and conclude that there is **no statistical difference** between the two samples.')
-#     else:
-#         st.warning('Please generate DataFrames first in the Data Visualization menu!')  
+        if p_value <= 0.05:
+            st.write('### Conclusion:')
+            st.markdown('The p-value is **less than 0.05**, hence we reject the null hypothesis and conclude that the two samples are **statistically different**.')
+        else:
+            st.write('### Conclusion:')
+            st.markdown('The p-value is **greater than 0.05**, hence we do not reject the null hypothesis and conclude that there is **no statistical difference** between the two samples.')
+    else:
+        st.warning('Please generate DataFrames first in the Data Visualization menu!')  
+
+
+elif menu == 'Statistical Tests':
+   
+    st.title('T-Test Explanation')
+
+    st.write("""
+    A t-test is a statistical test used to compare the means of two groups to determine if they are significantly different from each other.
+    """)
+
+    st.header('1. Hypotheses:')
+    st.write("""
+    - Null Hypothesis ($H_0$): The means of the two groups are equal.
+    - Alternative Hypothesis ($H_a$): The means of the two groups are not equal.
+    """)
+
+    st.header('2. Calculation:')
+    st.latex(r'''
+    t = \frac{{\bar{x}_1 - \bar{x}_2}}{{\sqrt{\left(\frac{s_1^2}{n_1}\right) + \left(\frac{s_2^2}{n_2}\right)}}}
+    ''')
+    st.write("""
+    where $\\bar{x}_1$ and $\\bar{x}_2$ are the sample means, $s_1^2$ and $s_2^2$ are the sample variances, and $n_1$ and $n_2$ are the sample sizes of the two groups.
+    """)
+
+    st.header('3. Decision Rule:')
+    st.write("""
+    - If the calculated p-value is less than the significance level (commonly 0.05), you reject the null hypothesis.
+    - If the p-value is greater than or equal to the significance level, you fail to reject the null hypothesis.
+    """)
+
+    st.header('4. Types of T-Test:')
+    st.write("""
+    - One-sample t-test: Compares the mean of one group to a known value.
+    - Two-sample t-test: Compares the means of two independent groups.
+    - Paired t-test: Compares the means of the same group or matched pairs.
+    """)
+
+    st.header('5. Assumptions:')
+    st.write("""
+    - The data are normally distributed.
+    - The variances of the two populations being compared are equal (for a two-sample t-test).
+    - The observations are independent.
+    """)
+
+    st.write("""
+    In conclusion, a t-test helps in determining whether there is a significant difference between the means of two groups under the assumption of normality and, in some cases, equal variances.
+    """)
+
 
 
 elif menu == 'Predictive Model':
@@ -163,122 +210,4 @@ elif menu == 'Predictive Model':
         st.pyplot(plt.gcf())
 else:
     st.warning('Please generate DataFrames first in the Data Visualization menu!')
-
-
-
-
-
-
-#     if st.button('Generate DataFrames'):
-#         np.random.seed(42)
-        
-#         measurements = np.random.normal(100, 20, n)
-        
-#         quantiles = np.quantile(measurements, [0.1, 0.9])
-#         mask = (measurements <= quantiles[0]) | (measurements >= quantiles[1])
-#         measurements[mask] += np.random.normal(0, 50, np.sum(mask))
-        
-#         factory_a = pd.DataFrame({'Measurement': measurements})
-#         factory_b = pd.DataFrame({'Measurement': np.random.normal(100, 50, len(factory_a))})
-        
-#         st.session_state.factory_a = factory_a
-#         st.session_state.factory_b = factory_b
-
-#         st.success('DataFrames Generated!')
-
-        
-#     if 'factory_a' in st.session_state and 'factory_b' in st.session_state:
-#         fig, ax = plt.subplots()
-#         ax.hist(st.session_state.factory_a['Measurement'], alpha=0.5, label='Factory A', bins=30, range=[0, 200])
-#         ax.hist(st.session_state.factory_b['Measurement'], alpha=0.5, label='Factory B', bins=30, range=[0, 200])
-#         ax.axvline(x=50, color='r', linestyle='dashed', linewidth=2, label='Tolerance Lower Limit')
-#         ax.axvline(x=150, color='g', linestyle='dashed', linewidth=2, label='Tolerance Upper Limit')
-#         ax.set_xlabel('Measurement')
-#         ax.set_ylabel('Frequency')
-#         ax.legend(loc='upper right')
-#         st.pyplot(fig)
-        
-#         # Additional Plots for first 10% and last 10% of Factory B and their corresponding values in Factory A.
-#         quantiles_b = np.quantile(st.session_state.factory_b['Measurement'], [0.1, 0.9])
-        
-#         mask_lower = st.session_state.factory_b['Measurement'] <= quantiles_b[0]
-#         mask_upper = st.session_state.factory_b['Measurement'] >= quantiles_b[1]
-        
-#         fig, axs = plt.subplots(2, 1, sharex=True, figsize=(10,8))
-        
-#         axs[0].hist(st.session_state.factory_a[mask_lower]['Measurement'], alpha=0.6, bins=30, range=[0, 200])
-#         axs[0].set_title('Distribution of the first 10% of Factory B in Factory A')
-#         axs[0].axvline(x=50, color='r', linestyle='dashed', linewidth=2)
-#         axs[0].axvline(x=150, color='g', linestyle='dashed', linewidth=2)
-        
-#         axs[1].hist(st.session_state.factory_a[mask_upper]['Measurement'], alpha=0.6, bins=30, range=[0, 200])
-#         axs[1].set_title('Distribution of the last 10% of Factory B in Factory A')
-#         axs[1].axvline(x=50, color='r', linestyle='dashed', linewidth=2)
-#         axs[1].axvline(x=150, color='g', linestyle='dashed', linewidth=2)
-        
-#         st.pyplot(fig)
-        
-#     else:
-#         st.warning('Please generate DataFrames first!')
-
-#     if 'factory_a' in st.session_state and 'factory_b' in st.session_state:
-#         t_stat, p_value = stats.ttest_ind(st.session_state.factory_a['Measurement'], st.session_state.factory_b['Measurement'])
-#         st.write('### P-value from t-test:')
-#         st.write(p_value)
-        
-#         if p_value <= 0.05:
-#             st.write('### Conclusion:')
-#             st.markdown('The p-value is **less than 0.05**, hence we reject the null hypothesis and conclude that the two samples are **statistically different**.')
-#         else:
-#             st.write('### Conclusion:')
-#             st.markdown('The p-value is **greater than 0.05**, hence we do not reject the null hypothesis and conclude that there is **no statistical difference** between the two samples.')
-#     else:
-#         st.warning('Please generate DataFrames first in the Data Visualization menu!')  
-
-
-# elif menu == 'Statistical Tests':
-   
-#     st.title('T-Test Explanation')
-
-#     st.write("""
-#     A t-test is a statistical test used to compare the means of two groups to determine if they are significantly different from each other.
-#     """)
-
-#     st.header('1. Hypotheses:')
-#     st.write("""
-#     - Null Hypothesis ($H_0$): The means of the two groups are equal.
-#     - Alternative Hypothesis ($H_a$): The means of the two groups are not equal.
-#     """)
-
-#     st.header('2. Calculation:')
-#     st.latex(r'''
-#     t = \frac{{\bar{x}_1 - \bar{x}_2}}{{\sqrt{\left(\frac{s_1^2}{n_1}\right) + \left(\frac{s_2^2}{n_2}\right)}}}
-#     ''')
-#     st.write("""
-#     where $\\bar{x}_1$ and $\\bar{x}_2$ are the sample means, $s_1^2$ and $s_2^2$ are the sample variances, and $n_1$ and $n_2$ are the sample sizes of the two groups.
-#     """)
-
-#     st.header('3. Decision Rule:')
-#     st.write("""
-#     - If the calculated p-value is less than the significance level (commonly 0.05), you reject the null hypothesis.
-#     - If the p-value is greater than or equal to the significance level, you fail to reject the null hypothesis.
-#     """)
-
-#     st.header('4. Types of T-Test:')
-#     st.write("""
-#     - One-sample t-test: Compares the mean of one group to a known value.
-#     - Two-sample t-test: Compares the means of two independent groups.
-#     - Paired t-test: Compares the means of the same group or matched pairs.
-#     """)
-
-#     st.header('5. Assumptions:')
-#     st.write("""
-#     - The data are normally distributed.
-#     - The variances of the two populations being compared are equal (for a two-sample t-test).
-#     - The observations are independent.
-#     """)
-
-#     st.write("""
-#     In conclusion, a t-test helps in determining whether there is a significant difference between the means of two groups under the assumption of normality and, in some cases, equal variances.
-#     """)
 
